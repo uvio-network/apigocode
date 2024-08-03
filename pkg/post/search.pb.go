@@ -471,9 +471,9 @@ func (x *SearchI_Object_Symbol) GetTime() string {
 //	                "kind": "claim",
 //	                "labels": "economy,inflation",
 //	                "lifecycle": "propose",
-//	                "stake": "10,2,1,1,4.843",
 //	                "text": "foo bar lorem ipsum",
-//	                "token": "WETH"
+//	                "token": "WETH",
+//	                "votes": "10,2,1,4.843"
 //	            }
 //	        }
 //	    ]
@@ -800,47 +800,69 @@ type SearchO_Object_Public struct {
 	//
 	//	"nullify" describes claims that question the verifiability of truth.
 	Lifecycle string `protobuf:"bytes,400,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
-	// option is the side of the bet that the calling user took as market
-	// participant if this is a post of kind "claim". If the caller did not
-	// participate in this market, then option will be empty, given that the post
-	// kind is "claim". If kind equals "comment", then option is the side of the
-	// bet taken with this post regardless the caller. If option does equal "true"
-	// and the post kind is "comment", then the staked reputation does agree with
-	// the given statement. If option does equal "false" on the other hand, then
-	// the staked reputation disagrees with the given statement.
-	Option string `protobuf:"bytes,500,opt,name=option,proto3" json:"option,omitempty"`
-	// stake is the amount of reputation staked. If kind equals "claim", then
-	// stake might be a comma separated string of token denominated values in the
-	// format "agreement,disagreement,minimum,initial,user".
-	//
-	//	"agreement" will represent all reputation staked in agreement with the
-	//	given statement.
-	//
-	//	"disagreement" will represent all reputation staked in disagreement
-	//	with the given statement.
-	//
-	//	"minimum" will represent the minimum amount of reputation that must be
-	//	staked when participating in this market.
-	//
-	//	"initial" will represent the initial amount of reputation that the
-	//	proposing user staked when creating this market.
-	//
-	//	"user" will represent the amount of staked reputation belonging to the
-	//	calling user, if said user did in fact participate in the given market.
-	Stake string `protobuf:"bytes,600,opt,name=stake,proto3" json:"stake,omitempty"`
 	// parent is the post ID of any claim that references another claim within its
 	// own tree. The first claim within a tree does not have a parent. If a post
 	// is for instance of kind "claim" and has lifecycle "dispute", then parent
 	// will reference the prior claim of kind "resolve" within their common tree,
 	// because any dispute does always try to challange any prior resolution.
-	Parent string `protobuf:"bytes,700,opt,name=parent,proto3" json:"parent,omitempty"`
+	Parent string `protobuf:"bytes,500,opt,name=parent,proto3" json:"parent,omitempty"`
 	// text is the human readable description the user provides in order to make a
 	// statement whether kind equals "claim" or "comment". This text may be
 	// provided in markdown format. This text might be as long as a common blog
 	// post. This text might contain external links.
-	Text string `protobuf:"bytes,800,opt,name=text,proto3" json:"text,omitempty"`
+	Text string `protobuf:"bytes,600,opt,name=text,proto3" json:"text,omitempty"`
 	// token is the token in which the staked reputation is denominated.
-	Token string `protobuf:"bytes,900,opt,name=token,proto3" json:"token,omitempty"`
+	Token string `protobuf:"bytes,700,opt,name=token,proto3" json:"token,omitempty"`
+	// votes is the summary of votes cast in relation to the referenced claim. If
+	// kind equals "claim" and lifecycle is one of "adjourn", "dispute", "nullify"
+	// or "propose", then votes may be a comma separated string of information
+	// about staked reputation in the following format.
+	//
+	//	"agreement,disagreement,minimum,proposer"
+	//
+	// If kind equals "claim" and lifecycle is "resolve", then votes may be a
+	// comma separated string of information about verified events in the
+	// following format. Any permutation of votes may be possible, e.g. "10,0",
+	// "0,8", "8,4", "9,9" etc.
+	//
+	//	"agreement,disagreement"
+	//
+	// If kind equals "comment" and the lifecycle of the parent claim is one of
+	// "adjourn", "dispute", "nullify" or "propose", then votes may be a comma
+	// separated string of information about the reputation that the commenting
+	// user staked on the parent claim, in the following format. While most
+	// reputation staked may only take one side, any permutation of tokens may be
+	// possible, e.g. "0.5,0", "0,3", "2,0.02".
+	//
+	//	"agreement,disagreement"
+	//
+	// If kind equals "comment" and the lifecycle of the parent claim is
+	// "resolve", then votes may be a comma separated string of information about
+	// the events that the commenting user verified on the parent claim, in the
+	// following format. Comments must only have a single voice on either side,
+	// e.g. "1,0", "0,1".
+	//
+	//	"agreement,disagreement"
+	//
+	// Further, the votes summary provides contextual information for the claim or
+	// comment at hand. The following definitions may apply respectively.
+	//
+	//	"agreement" represents all votes cast in agreement with the given
+	//	statement. The values here may be the amount of tokens or the amount of
+	//	voices that either expressed opinions or verified the truth.
+	//
+	//	"disagreement" represents all votes cast in disagreement with the given
+	//	statement. The values here may be the amount of tokens or the amount of
+	//	voices that either expressed opinions or verified the truth.
+	//
+	//	"minimum" represents the minimum amount of reputation that must be
+	//	staked when participating in this market. This value does neither apply
+	//	to comments nor to resolutions.
+	//
+	//	"proposer" represents the amount of staked reputation belonging to the
+	//	user who created the claim on which opinions have to be expressed.
+	//	This value does neither apply to comments nor to resolutions.
+	Votes string `protobuf:"bytes,800,opt,name=votes,proto3" json:"votes,omitempty"`
 }
 
 func (x *SearchO_Object_Public) Reset() {
@@ -903,20 +925,6 @@ func (x *SearchO_Object_Public) GetLifecycle() string {
 	return ""
 }
 
-func (x *SearchO_Object_Public) GetOption() string {
-	if x != nil {
-		return x.Option
-	}
-	return ""
-}
-
-func (x *SearchO_Object_Public) GetStake() string {
-	if x != nil {
-		return x.Stake
-	}
-	return ""
-}
-
 func (x *SearchO_Object_Public) GetParent() string {
 	if x != nil {
 		return x.Parent
@@ -934,6 +942,13 @@ func (x *SearchO_Object_Public) GetText() string {
 func (x *SearchO_Object_Public) GetToken() string {
 	if x != nil {
 		return x.Token
+	}
+	return ""
+}
+
+func (x *SearchO_Object_Public) GetVotes() string {
+	if x != nil {
+		return x.Votes
 	}
 	return ""
 }
@@ -1013,7 +1028,7 @@ var file_pbf_post_search_proto_rawDesc = []byte{
 	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x15, 0x0a, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x18, 0xac,
 	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x13, 0x0a, 0x04,
 	0x74, 0x72, 0x65, 0x65, 0x18, 0x90, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x72, 0x65,
-	0x65, 0x22, 0xf1, 0x01, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62,
+	0x65, 0x22, 0xd8, 0x01, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62,
 	0x6a, 0x65, 0x63, 0x74, 0x5f, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x12, 0x16, 0x0a, 0x06, 0x65,
 	0x78, 0x70, 0x69, 0x72, 0x79, 0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x65, 0x78, 0x70,
 	0x69, 0x72, 0x79, 0x12, 0x13, 0x0a, 0x04, 0x6b, 0x69, 0x6e, 0x64, 0x18, 0xc8, 0x01, 0x20, 0x01,
@@ -1021,15 +1036,13 @@ var file_pbf_post_search_proto_rawDesc = []byte{
 	0x6c, 0x73, 0x18, 0xac, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x6c, 0x61, 0x62, 0x65, 0x6c,
 	0x73, 0x12, 0x1d, 0x0a, 0x09, 0x6c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c, 0x65, 0x18, 0x90,
 	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x6c, 0x69, 0x66, 0x65, 0x63, 0x79, 0x63, 0x6c, 0x65,
-	0x12, 0x17, 0x0a, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x18, 0xf4, 0x03, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x06, 0x6f, 0x70, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x15, 0x0a, 0x05, 0x73, 0x74, 0x61,
-	0x6b, 0x65, 0x18, 0xd8, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x73, 0x74, 0x61, 0x6b, 0x65,
-	0x12, 0x17, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x18, 0xbc, 0x05, 0x20, 0x01, 0x28,
+	0x12, 0x17, 0x0a, 0x06, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x18, 0xf4, 0x03, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x06, 0x70, 0x61, 0x72, 0x65, 0x6e, 0x74, 0x12, 0x13, 0x0a, 0x04, 0x74, 0x65, 0x78,
-	0x74, 0x18, 0xa0, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x12, 0x15,
-	0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x84, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
-	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x3b, 0x70, 0x6f, 0x73, 0x74,
-	0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x18, 0xd8, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x12, 0x15,
+	0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0xbc, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05,
+	0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12, 0x15, 0x0a, 0x05, 0x76, 0x6f, 0x74, 0x65, 0x73, 0x18, 0xa0,
+	0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x6f, 0x74, 0x65, 0x73, 0x42, 0x09, 0x5a, 0x07,
+	0x2e, 0x2f, 0x3b, 0x70, 0x6f, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
