@@ -818,7 +818,7 @@ type SearchO_Object_Public struct {
 	// or "propose", then votes may be a comma separated string of information
 	// about staked reputation in the following format.
 	//
-	//	"agreement,disagreement,minimum,proposer"
+	//	"agreement,disagreement,minimum,creator"
 	//
 	// If kind equals "claim" and lifecycle is "resolve", then votes may be a
 	// comma separated string of information about verified events in the
@@ -859,9 +859,10 @@ type SearchO_Object_Public struct {
 	//	staked when participating in this market. This value does neither apply
 	//	to comments nor to resolutions.
 	//
-	//	"proposer" represents the amount of staked reputation belonging to the
+	//	"creator" represents the amount of staked reputation belonging to the
 	//	user who created the claim on which opinions have to be expressed.
-	//	This value does neither apply to comments nor to resolutions.
+	//	This value does neither apply to comments nor to claims of lifecycle
+	//	"resolve".
 	Votes string `protobuf:"bytes,800,opt,name=votes,proto3" json:"votes,omitempty"`
 }
 
