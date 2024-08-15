@@ -28,8 +28,8 @@ const (
 //	            "public": {
 //	                "chain": "421614",
 //	                "claim": "778237",
-//	                "hash": "0x1234",
 //	                "kind": "stake",
+//	                "lifecycle": "onchain",
 //	                "option": "true",
 //	                "value": "1.5"
 //	            }
@@ -233,9 +233,11 @@ type CreateI_Object_Public struct {
 	// lifecycle of the referenced claim must be compliant with the vote kind
 	// provided.
 	Claim string `protobuf:"bytes,200,opt,name=claim,proto3" json:"claim,omitempty"`
-	// hash is the onchain transaction hash for this vote. Setting hash implies
-	// that the vote got confirmed onchain, and with it the lifecycle phase
-	// "onchain" will be inferred automatically.
+	// hash is a votes's confirmed onchain transaction hash. hash left empty
+	// implies an interim lifecycle phase "pending". Setting hash implies that the
+	// given vote got confirmed onchain, and with it the vote's interim lifecycle
+	// phase will not be "pending" anymore, but instead switch to the provided
+	// desired lifecycle phase.
 	Hash string `protobuf:"bytes,300,opt,name=hash,proto3" json:"hash,omitempty"`
 	// kind is the type of vote, e.g. "stake" or "truth" on which a vote is cast.
 	// Note that kind must be compliant with the lifecycle of the referenced
@@ -250,13 +252,12 @@ type CreateI_Object_Public struct {
 	//	"resolve".
 	Kind string `protobuf:"bytes,400,opt,name=kind,proto3" json:"kind,omitempty"`
 	// lifecycle describes the evolutionary stage of a vote. All votes start with
-	// the lifecycle phase "pending". Those pending votes were posted offchain,
-	// but have not yet been confirmed onchain. Once votes have been confirmed
-	// onchain the vote's lifecycle phase will be set to "onchain".
+	// the interim lifecycle phase "pending". Those pending votes were posted
+	// offchain, but have not yet been confirmed onchain. Once votes have been
+	// confirmed onchain the vote's desired lifecycle phase will be set as
+	// provided.
 	//
 	//	"onchain" describes votes that have been confirmed onchain.
-	//
-	//	"pending" describes votes that are not confirmed onchain.
 	Lifecycle string `protobuf:"bytes,500,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
 	// meta may contain any meta data about this vote. It is an optional field
 	// that may or may not be used.

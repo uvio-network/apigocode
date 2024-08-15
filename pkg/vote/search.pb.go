@@ -728,13 +728,12 @@ type SearchO_Object_Public struct {
 	//	"resolve".
 	Kind string `protobuf:"bytes,400,opt,name=kind,proto3" json:"kind,omitempty"`
 	// lifecycle describes the evolutionary stage of a vote. All votes start with
-	// the lifecycle phase "pending". Those pending votes were posted offchain,
-	// but have not yet been confirmed onchain. Once votes have been confirmed
-	// onchain the vote's lifecycle phase will be set to "onchain".
+	// the interim lifecycle phase "pending". Those pending votes were posted
+	// offchain, but have not yet been confirmed onchain. Once votes have been
+	// confirmed onchain the vote's desired lifecycle phase will be set as
+	// provided.
 	//
 	//	"onchain" describes votes that have been confirmed onchain.
-	//
-	//	"pending" describes votes that are not confirmed onchain.
 	Lifecycle string `protobuf:"bytes,500,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
 	// meta may contain any meta data about this vote. It is an optional field
 	// that may or may not be used.
