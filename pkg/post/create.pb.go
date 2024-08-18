@@ -266,7 +266,7 @@ type CreateI_Object_Public struct {
 	//	"resolve" describes claims that allow to verify the truth.
 	Lifecycle string `protobuf:"bytes,600,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
 	// meta may contain onchain specific meta data like tree ID and claim ID as
-	// tracked by a smart contract. meta should be empty for comments.
+	// tracked by a smart contract.
 	Meta string `protobuf:"bytes,700,opt,name=meta,proto3" json:"meta,omitempty"`
 	// parent is the post ID of any claim that references another claim within its
 	// own tree. The first claim within a tree does not have a parent. If a post
