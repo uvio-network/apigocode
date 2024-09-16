@@ -408,14 +408,6 @@ func (*SearchI_Object_Symbol) Descriptor() ([]byte, []int) {
 //	{
 //	    "object": [
 //	        {
-//	            "extern": {
-//	                "staked": [
-//	                    {
-//	                        "balance": "105.18",
-//	                        "token": "UVX"
-//	                    }
-//	                ]
-//	            },
 //	            "intern": {
 //	                "created": "1689001255",
 //	                "id": "551265"
@@ -588,8 +580,6 @@ type SearchO_Object_Extern struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
-
-	Staked []*SearchO_Object_Extern_Staked `protobuf:"bytes,100,rep,name=staked,proto3" json:"staked,omitempty"`
 }
 
 func (x *SearchO_Object_Extern) Reset() {
@@ -624,70 +614,6 @@ func (*SearchO_Object_Extern) Descriptor() ([]byte, []int) {
 	return file_pbf_user_search_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *SearchO_Object_Extern) GetStaked() []*SearchO_Object_Extern_Staked {
-	if x != nil {
-		return x.Staked
-	}
-	return nil
-}
-
-type SearchO_Object_Extern_Staked struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// balance is user's staked balance of the specified token.
-	Balance string `protobuf:"bytes,100,opt,name=balance,proto3" json:"balance,omitempty"`
-	// token is the denomination of the user's staked balance.
-	Token string `protobuf:"bytes,200,opt,name=token,proto3" json:"token,omitempty"`
-}
-
-func (x *SearchO_Object_Extern_Staked) Reset() {
-	*x = SearchO_Object_Extern_Staked{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_pbf_user_search_proto_msgTypes[11]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *SearchO_Object_Extern_Staked) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SearchO_Object_Extern_Staked) ProtoMessage() {}
-
-func (x *SearchO_Object_Extern_Staked) ProtoReflect() protoreflect.Message {
-	mi := &file_pbf_user_search_proto_msgTypes[11]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SearchO_Object_Extern_Staked.ProtoReflect.Descriptor instead.
-func (*SearchO_Object_Extern_Staked) Descriptor() ([]byte, []int) {
-	return file_pbf_user_search_proto_rawDescGZIP(), []int{11}
-}
-
-func (x *SearchO_Object_Extern_Staked) GetBalance() string {
-	if x != nil {
-		return x.Balance
-	}
-	return ""
-}
-
-func (x *SearchO_Object_Extern_Staked) GetToken() string {
-	if x != nil {
-		return x.Token
-	}
-	return ""
-}
-
 type SearchO_Object_Intern struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -702,7 +628,7 @@ type SearchO_Object_Intern struct {
 func (x *SearchO_Object_Intern) Reset() {
 	*x = SearchO_Object_Intern{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pbf_user_search_proto_msgTypes[12]
+		mi := &file_pbf_user_search_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -715,7 +641,7 @@ func (x *SearchO_Object_Intern) String() string {
 func (*SearchO_Object_Intern) ProtoMessage() {}
 
 func (x *SearchO_Object_Intern) ProtoReflect() protoreflect.Message {
-	mi := &file_pbf_user_search_proto_msgTypes[12]
+	mi := &file_pbf_user_search_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -728,7 +654,7 @@ func (x *SearchO_Object_Intern) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchO_Object_Intern.ProtoReflect.Descriptor instead.
 func (*SearchO_Object_Intern) Descriptor() ([]byte, []int) {
-	return file_pbf_user_search_proto_rawDescGZIP(), []int{12}
+	return file_pbf_user_search_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *SearchO_Object_Intern) GetCreated() string {
@@ -759,7 +685,7 @@ type SearchO_Object_Public struct {
 func (x *SearchO_Object_Public) Reset() {
 	*x = SearchO_Object_Public{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_pbf_user_search_proto_msgTypes[13]
+		mi := &file_pbf_user_search_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -772,7 +698,7 @@ func (x *SearchO_Object_Public) String() string {
 func (*SearchO_Object_Public) ProtoMessage() {}
 
 func (x *SearchO_Object_Public) ProtoReflect() protoreflect.Message {
-	mi := &file_pbf_user_search_proto_msgTypes[13]
+	mi := &file_pbf_user_search_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -785,7 +711,7 @@ func (x *SearchO_Object_Public) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchO_Object_Public.ProtoReflect.Descriptor instead.
 func (*SearchO_Object_Public) Descriptor() ([]byte, []int) {
-	return file_pbf_user_search_proto_rawDescGZIP(), []int{13}
+	return file_pbf_user_search_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *SearchO_Object_Public) GetImage() string {
@@ -860,27 +786,18 @@ var file_pbf_user_search_proto_rawDesc = []byte{
 	0x12, 0x34, 0x0a, 0x06, 0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x18, 0xac, 0x02, 0x20, 0x01, 0x28,
 	0x0b, 0x32, 0x1b, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f,
 	0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x52, 0x06,
-	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x22, 0x53, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68,
-	0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x12,
-	0x3a, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x6b, 0x65, 0x64, 0x18, 0x64, 0x20, 0x03, 0x28, 0x0b, 0x32,
-	0x22, 0x2e, 0x75, 0x73, 0x65, 0x72, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f,
-	0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x5f, 0x53, 0x74, 0x61,
-	0x6b, 0x65, 0x64, 0x52, 0x06, 0x73, 0x74, 0x61, 0x6b, 0x65, 0x64, 0x22, 0x4f, 0x0a, 0x1c, 0x53,
-	0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x45, 0x78,
-	0x74, 0x65, 0x72, 0x6e, 0x5f, 0x53, 0x74, 0x61, 0x6b, 0x65, 0x64, 0x12, 0x18, 0x0a, 0x07, 0x62,
-	0x61, 0x6c, 0x61, 0x6e, 0x63, 0x65, 0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x62, 0x61,
-	0x6c, 0x61, 0x6e, 0x63, 0x65, 0x12, 0x15, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0xc8,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x42, 0x0a, 0x15,
-	0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x49,
-	0x6e, 0x74, 0x65, 0x72, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64,
-	0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74, 0x65, 0x64, 0x12,
-	0x0f, 0x0a, 0x02, 0x69, 0x64, 0x18, 0xc8, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69, 0x64,
-	0x22, 0x42, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65,
-	0x63, 0x74, 0x5f, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x12, 0x14, 0x0a, 0x05, 0x69, 0x6d, 0x61,
-	0x67, 0x65, 0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69, 0x6d, 0x61, 0x67, 0x65, 0x12,
-	0x13, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0xc8, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
-	0x6e, 0x61, 0x6d, 0x65, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x3b, 0x75, 0x73, 0x65, 0x72, 0x62,
-	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x70, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x22, 0x17, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68,
+	0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x45, 0x78, 0x74, 0x65, 0x72, 0x6e, 0x22,
+	0x42, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63,
+	0x74, 0x5f, 0x49, 0x6e, 0x74, 0x65, 0x72, 0x6e, 0x12, 0x18, 0x0a, 0x07, 0x63, 0x72, 0x65, 0x61,
+	0x74, 0x65, 0x64, 0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x63, 0x72, 0x65, 0x61, 0x74,
+	0x65, 0x64, 0x12, 0x0f, 0x0a, 0x02, 0x69, 0x64, 0x18, 0xc8, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x02, 0x69, 0x64, 0x22, 0x42, 0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f,
+	0x62, 0x6a, 0x65, 0x63, 0x74, 0x5f, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x12, 0x14, 0x0a, 0x05,
+	0x69, 0x6d, 0x61, 0x67, 0x65, 0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x69, 0x6d, 0x61,
+	0x67, 0x65, 0x12, 0x13, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0xc8, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x3b, 0x75, 0x73,
+	0x65, 0x72, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -895,22 +812,21 @@ func file_pbf_user_search_proto_rawDescGZIP() []byte {
 	return file_pbf_user_search_proto_rawDescData
 }
 
-var file_pbf_user_search_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
+var file_pbf_user_search_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_pbf_user_search_proto_goTypes = []interface{}{
-	(*SearchI)(nil),                      // 0: user.SearchI
-	(*SearchI_Filter)(nil),               // 1: user.SearchI_Filter
-	(*SearchI_Filter_Paging)(nil),        // 2: user.SearchI_Filter_Paging
-	(*SearchI_Object)(nil),               // 3: user.SearchI_Object
-	(*SearchI_Object_Intern)(nil),        // 4: user.SearchI_Object_Intern
-	(*SearchI_Object_Public)(nil),        // 5: user.SearchI_Object_Public
-	(*SearchI_Object_Symbol)(nil),        // 6: user.SearchI_Object_Symbol
-	(*SearchO)(nil),                      // 7: user.SearchO
-	(*SearchO_Filter)(nil),               // 8: user.SearchO_Filter
-	(*SearchO_Object)(nil),               // 9: user.SearchO_Object
-	(*SearchO_Object_Extern)(nil),        // 10: user.SearchO_Object_Extern
-	(*SearchO_Object_Extern_Staked)(nil), // 11: user.SearchO_Object_Extern_Staked
-	(*SearchO_Object_Intern)(nil),        // 12: user.SearchO_Object_Intern
-	(*SearchO_Object_Public)(nil),        // 13: user.SearchO_Object_Public
+	(*SearchI)(nil),               // 0: user.SearchI
+	(*SearchI_Filter)(nil),        // 1: user.SearchI_Filter
+	(*SearchI_Filter_Paging)(nil), // 2: user.SearchI_Filter_Paging
+	(*SearchI_Object)(nil),        // 3: user.SearchI_Object
+	(*SearchI_Object_Intern)(nil), // 4: user.SearchI_Object_Intern
+	(*SearchI_Object_Public)(nil), // 5: user.SearchI_Object_Public
+	(*SearchI_Object_Symbol)(nil), // 6: user.SearchI_Object_Symbol
+	(*SearchO)(nil),               // 7: user.SearchO
+	(*SearchO_Filter)(nil),        // 8: user.SearchO_Filter
+	(*SearchO_Object)(nil),        // 9: user.SearchO_Object
+	(*SearchO_Object_Extern)(nil), // 10: user.SearchO_Object_Extern
+	(*SearchO_Object_Intern)(nil), // 11: user.SearchO_Object_Intern
+	(*SearchO_Object_Public)(nil), // 12: user.SearchO_Object_Public
 }
 var file_pbf_user_search_proto_depIdxs = []int32{
 	1,  // 0: user.SearchI.filter:type_name -> user.SearchI_Filter
@@ -922,14 +838,13 @@ var file_pbf_user_search_proto_depIdxs = []int32{
 	8,  // 6: user.SearchO.filter:type_name -> user.SearchO_Filter
 	9,  // 7: user.SearchO.object:type_name -> user.SearchO_Object
 	10, // 8: user.SearchO_Object.extern:type_name -> user.SearchO_Object_Extern
-	12, // 9: user.SearchO_Object.intern:type_name -> user.SearchO_Object_Intern
-	13, // 10: user.SearchO_Object.public:type_name -> user.SearchO_Object_Public
-	11, // 11: user.SearchO_Object_Extern.staked:type_name -> user.SearchO_Object_Extern_Staked
-	12, // [12:12] is the sub-list for method output_type
-	12, // [12:12] is the sub-list for method input_type
-	12, // [12:12] is the sub-list for extension type_name
-	12, // [12:12] is the sub-list for extension extendee
-	0,  // [0:12] is the sub-list for field type_name
+	11, // 9: user.SearchO_Object.intern:type_name -> user.SearchO_Object_Intern
+	12, // 10: user.SearchO_Object.public:type_name -> user.SearchO_Object_Public
+	11, // [11:11] is the sub-list for method output_type
+	11, // [11:11] is the sub-list for method input_type
+	11, // [11:11] is the sub-list for extension type_name
+	11, // [11:11] is the sub-list for extension extendee
+	0,  // [0:11] is the sub-list for field type_name
 }
 
 func init() { file_pbf_user_search_proto_init() }
@@ -1071,18 +986,6 @@ func file_pbf_user_search_proto_init() {
 			}
 		}
 		file_pbf_user_search_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*SearchO_Object_Extern_Staked); i {
-			case 0:
-				return &v.state
-			case 1:
-				return &v.sizeCache
-			case 2:
-				return &v.unknownFields
-			default:
-				return nil
-			}
-		}
-		file_pbf_user_search_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SearchO_Object_Intern); i {
 			case 0:
 				return &v.state
@@ -1094,7 +997,7 @@ func file_pbf_user_search_proto_init() {
 				return nil
 			}
 		}
-		file_pbf_user_search_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+		file_pbf_user_search_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*SearchO_Object_Public); i {
 			case 0:
 				return &v.state
@@ -1113,7 +1016,7 @@ func file_pbf_user_search_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_pbf_user_search_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   14,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
