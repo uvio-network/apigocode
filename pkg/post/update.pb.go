@@ -249,8 +249,7 @@ type UpdateI_Object_Public struct {
 	// and with it the claim's interim lifecycle phase will not be "pending"
 	// anymore, but instead switch to the provided desired lifecycle phase.
 	Hash string `protobuf:"bytes,100,opt,name=hash,proto3" json:"hash,omitempty"`
-	// meta may contain onchain specific meta data like tree ID and claim ID as
-	// tracked by a smart contract.
+	// meta may contain onchain arbitrary meta data.
 	Meta string `protobuf:"bytes,200,opt,name=meta,proto3" json:"meta,omitempty"`
 }
 
