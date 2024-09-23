@@ -242,7 +242,7 @@ type CreateI_Object_Public struct {
 	//
 	//	"stake" defines votes for users expressing their own opinions. A vote
 	//	may have set kind "stake" to express opinions on claims of either kind
-	//	"adjourn", "dispute", "nullify" or "propose".
+	//	"dispute" or "propose".
 	//
 	//	"truth" defines votes for users verifying real world events. A vote may
 	//	have set kind "stake" to verify real events on claims of kind

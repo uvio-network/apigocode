@@ -492,9 +492,9 @@ func (x *SearchI_Object_Symbol) GetVote() string {
 //	                "kind": "claim",
 //	                "labels": "economy,inflation",
 //	                "lifecycle": "propose:onchain",
+//	                "summary": "10,2,1,4.843",
 //	                "text": "foo bar lorem ipsum",
-//	                "token": "WETH",
-//	                "votes": "10,2,1,4.843"
+//	                "token": "WETH"
 //	            }
 //	        }
 //	    ]
@@ -664,7 +664,7 @@ type SearchO_Object_Extern struct {
 	// truth sampling process, if any. The key here will be wallet addresses, and
 	// the values here will be user IDs. It may happen that user IDs are missing
 	// if users exclusively participated onchain. Samples will only be returned
-	// for claims of lifecycle phase resolve, because only such claims select
+	// for claims of lifecycle phase "resolve", because only such claims select
 	// stakers randomly in order to verify events in teh real world.
 	Samples map[string]string `protobuf:"bytes,100,rep,name=samples,proto3" json:"samples,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"bytes,2,opt,name=value,proto3"`
 }
@@ -720,8 +720,8 @@ type SearchO_Object_Intern struct {
 	// owner is the ID of the user who created this post.
 	Owner string `protobuf:"bytes,300,opt,name=owner,proto3" json:"owner,omitempty"`
 	// tree is the internal list ID within which all referenced claims are grouped
-	// together. Using this tree ID it is possible to search for all claims
-	// belonging to the same lifecycle.
+	// together. Using this tree ID, it is possible to search for all claims
+	// belonging to the same original propose.
 	Tree string `protobuf:"bytes,400,opt,name=tree,proto3" json:"tree,omitempty"`
 }
 
@@ -815,28 +815,24 @@ type SearchO_Object_Public struct {
 	// tree, plus its status within the system. This field may look like one of
 	// the examples below.
 	//
-	//	propose:pending
-	//
-	//	resolve:onchain
-	//
 	//	dispute:pending
 	//
-	//	settled:onchain
+	//	propose:onchain
+	//
+	//	resolve:pending
+	//
+	//	balance:onchain
 	//
 	// Only posts of kind "claim" will have a lifecycle phase set. The full list
 	// of possible lifecycle phases can be seen below.
 	//
-	//	"adjourn" describes claims that defer claim resolution
-	//
 	//	"dispute" describes claims that challenge any prior resolution
-	//
-	//	"nullify" describes claims that question the verifiability of truth
 	//
 	//	"propose" describes claims that make any initial statement
 	//
 	//	"resolve" describes claims that allow to verify the truth
 	//
-	//	"settled" describes claims that finalized by updating user balances
+	//	"balance" describes meta objects for updating user balances
 	//
 	// All claims start with the interim system status "pending". Those pending
 	// claims were posted offchain, but have not yet been confirmed onchain.
@@ -853,46 +849,40 @@ type SearchO_Object_Public struct {
 	// will reference the prior claim of kind "resolve" within their common tree,
 	// because any dispute does always try to challange any prior resolution.
 	Parent string `protobuf:"bytes,900,opt,name=parent,proto3" json:"parent,omitempty"`
-	// text is the human readable description the user provides in order to make a
-	// statement whether kind equals "claim" or "comment". This text may be
-	// provided in markdown format. This text might be as long as a common blog
-	// post. This text might contain external links.
-	Text string `protobuf:"bytes,1000,opt,name=text,proto3" json:"text,omitempty"`
-	// token is the token in which the staked reputation is denominated.
-	Token string `protobuf:"bytes,1100,opt,name=token,proto3" json:"token,omitempty"`
-	// votes is the summary of votes cast in relation to the referenced claim. If
-	// kind equals "claim" and lifecycle is one of "adjourn", "dispute", "nullify"
-	// or "propose", then votes may be a comma separated string of information
-	// about staked reputation in the following format.
+	// summary is an account of various vote specific metrics in relation to the
+	// referenced claim and its lifecycle phase. If kind equals "claim" and
+	// lifecycle is one of "dispute" or "propose", then summary may be a comma
+	// separated string of information about staked reputation in the following
+	// format.
 	//
 	//	"agreement,disagreement,minimum,creator"
 	//
-	// If kind equals "claim" and lifecycle is "resolve", then votes may be a
+	// If kind equals "claim" and lifecycle is "resolve", then summary may be a
 	// comma separated string of information about verified events in the
-	// following format. Any permutation of votes may be possible, e.g. "10,0",
-	// "0,8", "8,4", "9,9" etc.
+	// following format. Any permutation of summary details may be possible, e.g.
+	// "10,0", "0,8", "8,4", "9,9" etc.
 	//
 	//	"agreement,disagreement"
 	//
 	// If kind equals "comment" and the lifecycle of the parent claim is one of
-	// "adjourn", "dispute", "nullify" or "propose", then votes may be a comma
-	// separated string of information about the reputation that the commenting
-	// user staked on the parent claim, in the following format. While most
-	// reputation staked may only take one side, any permutation of tokens may be
-	// possible, e.g. "0.5,0", "0,3", "2,0.02".
+	// "dispute" or "propose", then summary may be a comma separated string of
+	// information about the reputation that the commenting user staked on the
+	// parent claim, in the following format. While most reputation staked may
+	// only take one side, any permutation of tokens may be possible, e.g.
+	// "0.5,0", "0,3", "2,0.02".
 	//
 	//	"agreement,disagreement"
 	//
 	// If kind equals "comment" and the lifecycle of the parent claim is
-	// "resolve", then votes may be a comma separated string of information about
-	// the events that the commenting user verified on the parent claim, in the
-	// following format. Comments must only have a single voice on either side,
-	// e.g. "1,0", "0,1".
+	// "resolve", then summary may be a comma separated string of information
+	// about the events that the commenting user verified on the parent claim, in
+	// the following format. Comments must only have a single voice on either
+	// side, e.g. "1,0", "0,1".
 	//
 	//	"agreement,disagreement"
 	//
-	// Further, the votes summary provides contextual information for the claim or
-	// comment at hand. The following definitions may apply respectively.
+	// Further, the summary summary provides contextual information for the claim
+	// or comment at hand. The following definitions may apply respectively.
 	//
 	//	"agreement" represents all votes cast in agreement with the given
 	//	statement. The values here may be the amount of tokens or the amount of
@@ -910,7 +900,14 @@ type SearchO_Object_Public struct {
 	//	user who created the claim on which opinions have to be expressed.
 	//	This value does neither apply to comments nor to claims of lifecycle
 	//	"resolve".
-	Votes string `protobuf:"bytes,1200,opt,name=votes,proto3" json:"votes,omitempty"`
+	Summary string `protobuf:"bytes,1000,opt,name=summary,proto3" json:"summary,omitempty"`
+	// text is the human readable description the user provides in order to make a
+	// statement whether kind equals "claim" or "comment". This text may be
+	// provided in markdown format. This text might be as long as a common blog
+	// post. This text might contain external links.
+	Text string `protobuf:"bytes,1100,opt,name=text,proto3" json:"text,omitempty"`
+	// token is the token in which the staked reputation is denominated.
+	Token string `protobuf:"bytes,1200,opt,name=token,proto3" json:"token,omitempty"`
 }
 
 func (x *SearchO_Object_Public) Reset() {
@@ -1008,6 +1005,13 @@ func (x *SearchO_Object_Public) GetParent() string {
 	return ""
 }
 
+func (x *SearchO_Object_Public) GetSummary() string {
+	if x != nil {
+		return x.Summary
+	}
+	return ""
+}
+
 func (x *SearchO_Object_Public) GetText() string {
 	if x != nil {
 		return x.Text
@@ -1018,13 +1022,6 @@ func (x *SearchO_Object_Public) GetText() string {
 func (x *SearchO_Object_Public) GetToken() string {
 	if x != nil {
 		return x.Token
-	}
-	return ""
-}
-
-func (x *SearchO_Object_Public) GetVotes() string {
-	if x != nil {
-		return x.Votes
 	}
 	return ""
 }
@@ -1112,7 +1109,7 @@ var file_pbf_post_search_proto_rawDesc = []byte{
 	0x12, 0x0f, 0x0a, 0x02, 0x69, 0x64, 0x18, 0xc8, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x02, 0x69,
 	0x64, 0x12, 0x15, 0x0a, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x18, 0xac, 0x02, 0x20, 0x01, 0x28,
 	0x09, 0x52, 0x05, 0x6f, 0x77, 0x6e, 0x65, 0x72, 0x12, 0x13, 0x0a, 0x04, 0x74, 0x72, 0x65, 0x65,
-	0x18, 0x90, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x72, 0x65, 0x65, 0x22, 0xb6, 0x02,
+	0x18, 0x90, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74, 0x72, 0x65, 0x65, 0x22, 0xba, 0x02,
 	0x0a, 0x15, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x4f, 0x5f, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
 	0x5f, 0x50, 0x75, 0x62, 0x6c, 0x69, 0x63, 0x12, 0x14, 0x0a, 0x05, 0x63, 0x68, 0x61, 0x69, 0x6e,
 	0x18, 0x64, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x63, 0x68, 0x61, 0x69, 0x6e, 0x12, 0x1b, 0x0a,
@@ -1128,12 +1125,12 @@ var file_pbf_post_search_proto_rawDesc = []byte{
 	0x63, 0x79, 0x63, 0x6c, 0x65, 0x12, 0x13, 0x0a, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x18, 0xa0, 0x06,
 	0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6d, 0x65, 0x74, 0x61, 0x12, 0x17, 0x0a, 0x06, 0x70, 0x61,
 	0x72, 0x65, 0x6e, 0x74, 0x18, 0x84, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x70, 0x61, 0x72,
-	0x65, 0x6e, 0x74, 0x12, 0x13, 0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0xe8, 0x07, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x04, 0x74, 0x65, 0x78, 0x74, 0x12, 0x15, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65,
-	0x6e, 0x18, 0xcc, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x12,
-	0x15, 0x0a, 0x05, 0x76, 0x6f, 0x74, 0x65, 0x73, 0x18, 0xb0, 0x09, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x05, 0x76, 0x6f, 0x74, 0x65, 0x73, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f, 0x3b, 0x70, 0x6f, 0x73,
-	0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x65, 0x6e, 0x74, 0x12, 0x19, 0x0a, 0x07, 0x73, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79, 0x18, 0xe8,
+	0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x73, 0x75, 0x6d, 0x6d, 0x61, 0x72, 0x79, 0x12, 0x13,
+	0x0a, 0x04, 0x74, 0x65, 0x78, 0x74, 0x18, 0xcc, 0x08, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x74,
+	0x65, 0x78, 0x74, 0x12, 0x15, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0xb0, 0x09, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x42, 0x09, 0x5a, 0x07, 0x2e, 0x2f,
+	0x3b, 0x70, 0x6f, 0x73, 0x74, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (

@@ -258,15 +258,11 @@ type CreateI_Object_Public struct {
 	// claims have been confirmed onchain the claim's desired lifecycle phase will
 	// be set as provided.
 	//
-	//	"adjourn" describes claims that defer claim resolution.
+	//	"dispute" describes claims that challenge any prior resolution
 	//
-	//	"dispute" describes claims that challenge any prior resolution.
+	//	"propose" describes claims that make any initial statement
 	//
-	//	"nullify" describes claims that question the verifiability of truth.
-	//
-	//	"propose" describes claims that make any initial statement.
-	//
-	//	"resolve" describes claims that allow to verify the truth.
+	//	"resolve" describes claims that allow to verify the truth
 	Lifecycle string `protobuf:"bytes,700,opt,name=lifecycle,proto3" json:"lifecycle,omitempty"`
 	// meta may contain onchain arbitrary meta data.
 	Meta string `protobuf:"bytes,800,opt,name=meta,proto3" json:"meta,omitempty"`
